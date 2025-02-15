@@ -27,7 +27,7 @@ jobs:
         run: zip -r deploy.zip . -x '*.git*'  # Create a ZIP file of the project, excluding .git files
 
       - name: Upload Deployment Package  # Upload the ZIP file as an artifact so you can download it later
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deployment-package
           path: deploy.zip
