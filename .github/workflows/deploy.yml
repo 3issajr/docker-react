@@ -1,6 +1,6 @@
-name: GitHub Action
+name: GitHub Action  # Name of the GitHub Action workflow
 
-#trigger
+# Trigger the workflow on push events to the "master" branch
 on: 
   push:
     branches:
@@ -8,21 +8,29 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+    
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3  # Checkout the repository code
 
       - name: Docker Login (For Testing)
-        run: echo "Skipping actual login..."
+        run: echo "Skipping actual login..."  # Placeholder step to simulate Docker login
 
       - name: Build Docker Image
-        run: docker build -t cygnetops/react-test -f Dockerfile.dev .
+        run: docker build -t cygnetops/react-test -f Dockerfile.dev .  # Build the Docker image using Dockerfile.dev
 
       - name: Run Tests
-        run: docker run -e CI=true cygnetops/react-test npm test -- --passWithNoTests
+        run: docker run -e CI=true cygnetops/react-test npm test -- --passWithNoTests  
+        # Run tests inside the container; --passWithNoTests allows the workflow to pass even if no tests exist
 
       - name: Generate Deployment Package (For Testing)
-        run: zip -r deploy.zip . -x '*.git*'
+        run: zip -r deploy.zip . -x '*.git*'  # Create a ZIP file of the project, excluding .git files
+
+      - name: Upload Deployment Package  # Upload the ZIP file as an artifact so you can download it later
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-package
+          path: deploy.zip
 
       - name: ✅ Test Completed
-        run: echo "GitHub Action workflow test completed successfully!"
+        run: echo "GitHub Action workflow test completed successfully!"  # Print success message
