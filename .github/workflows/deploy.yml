@@ -4,7 +4,7 @@ name: GitHub Action
 on: 
   push:
     branches:
-      - main
+      - master
 
 jobs:
   test:
